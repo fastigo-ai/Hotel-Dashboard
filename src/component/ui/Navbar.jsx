@@ -72,6 +72,10 @@ export default function NavbarWithSidebar() {
                   </Link>
                 </li>
               ))}
+              <li className="flex items-center gap-4 text-white font-semibold mb-4">
+                <FaHome />
+                Login
+              </li>
             </ul>
           </div>
         </div>
@@ -124,7 +128,7 @@ export default function NavbarWithSidebar() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/addproduct" element={<NewProduct />} />
+              <Route path="/add-product" element={<NewProduct />} />
               <Route path="/customers" element={<Customers />} />
               
               
