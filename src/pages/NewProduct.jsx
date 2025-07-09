@@ -27,19 +27,10 @@ const UpdateProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      alert("You must be logged in to submit.");
-      return;
-    }
-
-    setIsLoading(true);
-
     try {
-      const result = await uploadProduct(formData, token);
+      const result = await uploadProduct(formData);
       console.log("✅ Upload success:", result);
-      navigate("/update-NewProduct"); // or wherever you want to redirect
+      navigate(`/update-NewProduct/${result._id}`); // or wherever you want to redirect
     } catch (err) {
       console.error("❌ Upload failed:", err);
       alert("Failed to upload product.");

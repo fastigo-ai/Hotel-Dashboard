@@ -130,7 +130,7 @@ export default function NavbarWithSidebar() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/add-product" element={<NewProduct />} />
-              <Route path="/Update-NewProduct" element={<UpdateNewProduct />} />
+              <Route path="/Update-NewProduct/:id?" element={<UpdateNewProduct />} />
               <Route path="/customers" element={<Customers />} />
               
               

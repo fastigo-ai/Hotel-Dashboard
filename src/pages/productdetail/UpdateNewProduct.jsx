@@ -1,10 +1,13 @@
 // src/components/UpdateNewProduct.js
 import React, { useState } from "react";
-import { uploadPropertyDetail } from "../../api/Api"; // ✅ Import the API call
+import { uploadPropertyDetail } from "../../api/Api"; 
+
+import { useParams } from "react-router-dom";
 
 const UpdateNewProduct = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
-    cardId: "",
+    cardId: id,
     name: "",
     title: "",
     location: "",

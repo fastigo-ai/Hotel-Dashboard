@@ -8,11 +8,8 @@ const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
  * @param {string} token - auth token
  * @returns {Promise<Object>}
  */
-export const uploadProduct = async (formData, token) => {
-  if (!token) {
-    console.error("❌ uploadProduct: Missing token. Cannot upload product.");
-    throw new Error("Unauthorized: No token provided");
-  }
+export const uploadProduct = async (formData ) => {
+
 
   try {
     const data = new FormData();
@@ -22,15 +19,12 @@ export const uploadProduct = async (formData, token) => {
       data.append(key, formData[key]);
     });
 
-    console.log("⬆️ Uploading product with token:", token);
-
     const response = await axios.post(
       `${BASE_URL}/api/property/add-property`,
       data,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -53,11 +47,7 @@ export const uploadProduct = async (formData, token) => {
  * @param {string} token - auth token
  * @returns {Promise<Object>}
  */
-export const uploadPropertyDetail = async (formData, token) => {
-  if (!token) {
-    console.error("❌ uploadPropertyDetail: Missing token. Cannot upload details.");
-    throw new Error("Unauthorized: No token provided");
-  }
+export const uploadPropertyDetail = async (formData ) => {
 
   try {
     const data = new FormData();
@@ -75,15 +65,12 @@ export const uploadPropertyDetail = async (formData, token) => {
       }
     });
 
-    console.log("⬆️ Uploading property detail with token:", token);
-
     const response = await axios.post(
       `${BASE_URL}/api/property/add-property-detail`,
       data,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       }
     );
