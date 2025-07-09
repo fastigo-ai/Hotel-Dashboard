@@ -1,128 +1,166 @@
-import React, { useState, useEffect } from "react";
+// src/components/UpdateProductForm.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { uploadProduct } from "../api/Api";
 
-const initialProduct = {
-  image: null,
-  title: "",
-  category: "",
-  description: "",
-  date: "",
-  price: 0,
-  gender: "",
-  sizes: ["", "", ""],
-};
+const UpdateProductForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    image: null,
+    title: "",
+    price: "",
+    rating: "",
+    badge: "",
+    category: "",
+  });
 
-const NewProduct = () => {
-  const [product, setProduct] = useState(initialProduct);
-  const [preview, setPreview] = useState(null);
-
-  useEffect(() => {
-    if (product.image) {
-      const objectUrl = URL.createObjectURL(product.image);
-      setPreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [product.image]);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
-  const handleImageChange = (e) => {
-    setProduct((prev) => ({ ...prev, image: e.target.files[0] }));
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent form from refreshing the page
+    const token = localStorage.getItem("token");
 
-  const handleSizeChange = (e) => {
-    const sizes = e.target.value.split(",").map((s) => s.trim());
-    setProduct((prev) => ({ ...prev, sizes }));
-  };
+    if (!token) {
+      alert("You must be logged in to submit.");
+      return;
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated Product:", product);
-    // TODO: API PUT/PATCH call
+    setIsLoading(true);
+
+    try {
+      const result = await uploadProduct(formData, token);
+      console.log("✅ Upload success:", result);
+      navigate("/update-NewProduct"); // or wherever you want to redirect
+    } catch (err) {
+      console.error("❌ Upload failed:", err);
+      alert("Failed to upload product.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="p-10 bg-gray-50 min-h-screen text-gray-700">
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold mb-6">Update Product</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Image Upload */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name */}
         <div>
-          <label className="block mb-2 font-medium">Upload Image</label>
-          <div className="border border-dashed border-gray-400 rounded-lg p-4 text-center">
-            <input type="file" onChange={handleImageChange} className="hidden" id="upload" />
-            <label htmlFor="upload" className="cursor-pointer text-blue-600">Drag & Drop or Browse</label>
-            {preview && <img src={preview} alt="Preview" className="mt-4 w-32 h-32 object-cover mx-auto" />}
-          </div>
+          <label className="block text-sm font-medium text-gray-700">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          />
         </div>
 
-        {/* Product Details */}
-        <div className="space-y-4">
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        {/* Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Title</label>
           <input
             type="text"
             name="title"
-            value={product.title}
+            value={formData.title}
             onChange={handleChange}
-            placeholder="Title"
-            className="w-full p-2 border rounded"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           />
-          <select name="category" value={product.category} onChange={handleChange} className="w-full p-2 border rounded">
-            <option value="All">All Category</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Lifestyle">Lifestyle</option>
-          </select>
-          <textarea
-            name="description"
-            value={product.description}
+        </div>
+
+        {/* Price */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Price</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
             onChange={handleChange}
-            rows="3"
-            className="w-full p-2 border rounded"
-            placeholder="Description..."
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           />
-          <div className="flex gap-4">
-            <input
-              type="date"
-              name="date"
-              value={product.date}
-              onChange={handleChange}
-              className="p-2 border rounded w-full"
-            />
-            <input
-              type="number"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              placeholder="Price"
-              className="p-2 border rounded w-full"
-            />
-          </div>
-          <select name="gender" value={product.gender} onChange={handleChange} className="w-full p-2 border rounded">
-            <option>-- Gender --</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Unisex">Unisex</option>
-          </select>
+        </div>
+
+        {/* Rating */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Rating</label>
+          <input
+            type="number"
+            name="rating"
+            step="0.1"
+            value={formData.rating}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        {/* Badge */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Badge</label>
           <input
             type="text"
-            placeholder="Sizes (comma separated)"
-            value={product.sizes.join(", ")}
-            onChange={handleSizeChange}
-            className="w-full p-2 border rounded"
+            name="badge"
+            value={formData.badge}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           />
-          <div className="flex gap-4">
-            <button type="submit" className="bg-purple-600 text-white px-4 py-2 rounded">
-              Save Product
-            </button>
-            <button type="reset" className="border border-purple-600 text-purple-600 px-4 py-2 rounded">
-              Cancel
-            </button>
-          </div>
+        </div>
+
+        {/* Category */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Category</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          >
+            <option value="">Select Category</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Kids">Kids</option>
+          </select>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            disabled={isLoading}
+          >
+            {isLoading ? "Uploading..." : "Continue"}
+          </button>
+          <button
+            type="button"
+            className="border border-purple-600 text-purple-600 px-4 py-2 rounded hover:bg-purple-50"
+            onClick={() => navigate("/")}
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-export default NewProduct;
+export default UpdateProductForm;

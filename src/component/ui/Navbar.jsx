@@ -13,6 +13,7 @@ import Dashboard from "../../pages/Dashboard";
 import Products from "../../pages/Products";
 import NewProduct from "../../pages/NewProduct";
 import Customers from "../../pages/Customers";
+import UpdateNewProduct from "../../pages/productdetail/UpdateNewProduct";
 // import other pages similarly
 
 export default function NavbarWithSidebar() {
@@ -129,6 +130,7 @@ export default function NavbarWithSidebar() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/add-product" element={<NewProduct />} />
+              <Route path="/Update-NewProduct" element={<UpdateNewProduct />} />
               <Route path="/customers" element={<Customers />} />
               
               
