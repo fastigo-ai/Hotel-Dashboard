@@ -90,7 +90,7 @@ const UpdateNewProduct = () => {
     if (file) {
       // Validate file
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 20 * 1024 * 1024; // 5MB
 
       if (!allowedTypes.includes(file.type)) {
         setError(`Invalid file type for image ${index + 1}. Please upload JPG, PNG, GIF, or WebP images.`);
