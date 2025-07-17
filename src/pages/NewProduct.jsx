@@ -12,6 +12,7 @@ const UpdateProductForm = () => {
     rating: "",
     badge: "",
     category: "",
+    roomType: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -197,6 +198,22 @@ const UpdateProductForm = () => {
             <option value="Men">Men</option>
             <option value="Women">Women</option>
             <option value="Kids">Kids</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Room Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="roomType"
+            value={formData.roomType}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-purple-500 focus:border-purple-500"
+            required
+          >
+            <option value="">Select Room Type</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
           </select>
         </div>
 

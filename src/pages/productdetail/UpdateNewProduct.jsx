@@ -13,12 +13,23 @@ const UpdateNewProduct = () => {
     title: "",
     location: "",
     guests: "",
+    bedroom: "",
+    bed: "",
     bathroom: "",
     rating: "",
     reviews: "",
-    host: "",
     description: "",
     price: "",
+    roomType: "",
+    quantity: "",
+    defaultAllowedPersons: "",
+    allowedPersonsPerRoom: "",
+    extraPersonCharge: "",
+    isSmokingAllowed: false,
+    smokingRoomCharge: "",
+    isPetFriendly: false,
+    allowedPets: "",
+    petFeePerPet: "",
     files: [null, null, null, null, null],
   });
 
@@ -33,11 +44,16 @@ const UpdateNewProduct = () => {
     { label: "Title", name: "title", required: true },
     { label: "Location", name: "location", required: true },
     { label: "Guests", name: "guests", type: "number", min: 1, required: true },
+    { label: "Bedrooms", name: "bedroom", type: "number", min: 1, required: true },
+    { label: "Beds", name: "bed", type: "number", min: 1, required: true },
     { label: "Bathroom", name: "bathroom", type: "number", min: 1, required: true },
     { label: "Rating", name: "rating", type: "number", step: "0.1", min: 0, max: 5, required: true },
     { label: "Reviews", name: "reviews", type: "number", min: 0, required: true },
-    { label: "Host", name: "host", required: true },
     { label: "Price", name: "price", type: "number", min: 0, step: "0.01", required: true },
+    { label: "Quantity", name: "quantity", type: "number", min: 1, required: true },
+    { label: "Default Allowed Persons", name: "defaultAllowedPersons", type: "number", min: 1, required: true },
+    { label: "Allowed Persons Per Room", name: "allowedPersonsPerRoom", type: "number", min: 1, required: true },
+    { label: "Extra Person Charge", name: "extraPersonCharge", type: "number", min: 0, required: true },
   ], []);
 
   // Form validation
@@ -76,10 +92,10 @@ const UpdateNewProduct = () => {
 
   // Memoized change handler
   const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
     // Clear error when user starts typing
     if (error) setError("");
@@ -221,6 +237,24 @@ const UpdateNewProduct = () => {
           </div>
         ))}
 
+        {/* Room Type Select */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Room Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="roomType"
+            value={formData.roomType}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select Room Type</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+          </select>
+        </div>
+
         {/* Description */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -235,6 +269,87 @@ const UpdateNewProduct = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter detailed product description"
           />
+        </div>
+
+        {/* Smoking and Pet Policies */}
+        <div className="space-y-4">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isSmokingAllowed"
+              name="isSmokingAllowed"
+              checked={formData.isSmokingAllowed}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label htmlFor="isSmokingAllowed" className="ml-2 block text-sm text-gray-900">
+              Smoking Allowed
+            </label>
+          </div>
+
+          {formData.isSmokingAllowed && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Smoking Room Charge <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="smokingRoomCharge"
+                value={formData.smokingRoomCharge}
+                onChange={handleChange}
+                min="0"
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          )}
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isPetFriendly"
+              name="isPetFriendly"
+              checked={formData.isPetFriendly}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label htmlFor="isPetFriendly" className="ml-2 block text-sm text-gray-900">
+              Pet Friendly
+            </label>
+          </div>
+
+          {formData.isPetFriendly && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Allowed Pets <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="allowedPets"
+                  value={formData.allowedPets}
+                  onChange={handleChange}
+                  min="0"
+                  required
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Pet Fee Per Pet <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="petFeePerPet"
+                  value={formData.petFeePerPet}
+                  onChange={handleChange}
+                  min="0"
+                  required
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Image Uploads */}
