@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
+const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
 
 /**
  * Upload product data including image
