@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
+export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
 
 /**
  * Upload product data including image
@@ -83,6 +83,82 @@ export const uploadPropertyDetail = async (formData ) => {
       status: error.response?.status,
       data: error.response?.data,
     });
+    throw error;
+  }
+};
+
+export const deleteProperty = async (id) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/api/property/delete-property/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting property:", error);
+    throw error;
+  }
+};
+export const updateProductDetail = async (id) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/api/property/update-property${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting property:", error);
+        throw error;
+    }
+};
+
+export const getPropertyCards = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/property/get-all-properties`);
+        return response.data; // assuming data is the array of cards
+    } catch (error) {
+        console.error("Error getting property cards:", error);
+        throw error;
+    }
+};
+export const getPropertyDetail = async (id) => {
+  try {
+    const response = await axios.get(
+      `https://starfish-app-6yhui.ondigitalocean.app/api/property/getPropertyDetail/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching property detail:", error);
+    throw error;
+  }
+};
+
+
+
+/**
+ * Fetch dashboard data
+ * @returns {Promise<Object>}
+ */
+export const getDashboardData = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/property/dashboard`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    throw error;
+  }
+};
+
+// If auth required, set token here
+export const BOOKINGS_API = `${BASE_URL}/api/property/my-bookings`;
+const token = localStorage.getItem("token");
+
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Authorization: token ? `Bearer ${token}` : "",
+  },
+});
+
+export const getBookings = async () => {
+  try {
+    const res = await api.get("/api/property/my-bookings");
+    return res.data;
+  } catch (error) {
     throw error;
   }
 };
