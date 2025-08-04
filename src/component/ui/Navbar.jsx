@@ -191,7 +191,11 @@ export default function NavbarWithSidebar() {
                 element={
                   <ProtectedRoute
                     element={<NewProduct />}
+<<<<<<< HEAD
                     requireAdmin={false}
+=======
+                    requireAdmin={true}
+>>>>>>> 7d371fb (first commit)
                     loginPath="/admin/login"
                   />
                 }
@@ -201,7 +205,11 @@ export default function NavbarWithSidebar() {
                 element={
                   <ProtectedRoute
                     element={<UpdateNewProduct />}
+<<<<<<< HEAD
                     requireAdmin={false}
+=======
+                    requireAdmin={true}
+>>>>>>> 7d371fb (first commit)
                     loginPath="/admin/login"
                   />
                 }
@@ -221,7 +229,11 @@ export default function NavbarWithSidebar() {
                 element={
                   <ProtectedRoute
                     element={<CreateListingForm />}
+<<<<<<< HEAD
                     requireAdmin={false}
+=======
+                    requireAdmin={true}
+>>>>>>> 7d371fb (first commit)
                     loginPath="/admin/login"
                   />
                 }
