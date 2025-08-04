@@ -2,15 +2,15 @@ import axios from "axios";
 
 export const BASE_URL = "https://starfish-app-6yhui.ondigitalocean.app";
 
+// const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
+
 /**
  * Upload product data including image
  * @param {Object} formData - form data with image file
  * @param {string} token - auth token
  * @returns {Promise<Object>}
  */
-export const uploadProduct = async (formData ) => {
-
-
+export const uploadProduct = async (formData) => {
   try {
     const data = new FormData();
 
@@ -47,8 +47,7 @@ export const uploadProduct = async (formData ) => {
  * @param {string} token - auth token
  * @returns {Promise<Object>}
  */
-export const uploadPropertyDetail = async (formData ) => {
-
+export const uploadPropertyDetail = async (formData) => {
   try {
     const data = new FormData();
 
@@ -89,7 +88,9 @@ export const uploadPropertyDetail = async (formData ) => {
 
 export const deleteProperty = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/property/delete-property/${id}`);
+    const response = await axios.delete(
+      `${BASE_URL}/api/property/delete-property/${id}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error deleting property:", error);
@@ -97,23 +98,27 @@ export const deleteProperty = async (id) => {
   }
 };
 export const updateProductDetail = async (id) => {
-    try {
-        const response = await axios.put(`${BASE_URL}/api/property/update-property${id}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error deleting property:", error);
-        throw error;
-    }
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/api/property/update-property${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting property:", error);
+    throw error;
+  }
 };
 
 export const getPropertyCards = async () => {
-    try {
-        const response = await axios.get(`${BASE_URL}/api/property/get-all-properties`);
-        return response.data; // assuming data is the array of cards
-    } catch (error) {
-        console.error("Error getting property cards:", error);
-        throw error;
-    }
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/property/get-all-properties`
+    );
+    return response.data; // assuming data is the array of cards
+  } catch (error) {
+    console.error("Error getting property cards:", error);
+    throw error;
+  }
 };
 export const getPropertyDetail = async (id) => {
   try {
@@ -126,8 +131,6 @@ export const getPropertyDetail = async (id) => {
     throw error;
   }
 };
-
-
 
 /**
  * Fetch dashboard data

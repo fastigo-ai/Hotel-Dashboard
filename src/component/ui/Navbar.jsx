@@ -191,7 +191,7 @@ export default function NavbarWithSidebar() {
                 element={
                   <ProtectedRoute
                     element={<NewProduct />}
-                    requireAdmin={true}
+                    requireAdmin={false}
                     loginPath="/admin/login"
                   />
                 }
