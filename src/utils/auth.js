@@ -2,33 +2,62 @@
 const STORAGE_KEY = "demo_users";
 const SESSION_KEY = "session_user";
 
-// Hash a string using SHA-256 and return hex
+/**
+ * Safe normalization for emails.
+ */
+const normalizeEmail = (email = "") => email.trim().toLowerCase();
+
+/**
+ * Hash a string using SHA-256 and return hex.
+ * Falls back with a clear error if crypto.subtle is unavailable.
+ */
 async function hashString(str) {
+  if (
+    !window.crypto ||
+    !window.crypto.subtle ||
+    typeof window.crypto.subtle.digest !== "function"
+  ) {
+    throw new Error("Crypto API not available. Cannot hash securely.");
+  }
   const encoder = new TextEncoder();
   const data = encoder.encode(str);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 function getAllUsers() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) {
+      console.warn("Unexpected users store, resetting to empty array.");
+      saveAllUsers([]);
+      return [];
+    }
+    return parsed;
+  } catch (e) {
+    console.warn("Failed to parse users from localStorage, resetting.", e);
+    saveAllUsers([]);
     return [];
   }
 }
 
 function saveAllUsers(users) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  } catch (e) {
+    console.error("Failed to save users to localStorage:", e);
+  }
 }
 
 // Seed default admin if missing
 async function seedAdmin() {
   const users = getAllUsers();
-  const adminEmail = "plainsmotorinnn@gmail.com";
-  if (!users.find((u) => u.email === adminEmail)) {
+  const adminEmail = normalizeEmail("plainsmotorinnn@gmail.com");
+  if (!users.find((u) => normalizeEmail(u.email) === adminEmail)) {
     const passwordHash = await hashString("plainsmotorinnn123");
     const answerHash = await hashString("adminanswer");
     users.push({
@@ -39,11 +68,7 @@ async function seedAdmin() {
       role: "admin",
     });
     saveAllUsers(users);
-    console.log(
-      "Seeded default admin:",
-      adminEmail,
-      "/ plainsmotorinnn123"
-    );
+    console.log("Seeded default admin:", adminEmail, "/ plainsmotorinnn123");
   }
 }
 
@@ -60,9 +85,9 @@ export async function signup({
   securityAnswer,
   role = "user",
 }) {
+  const normalized = normalizeEmail(email);
   const users = getAllUsers();
-  const normalized = email.trim().toLowerCase();
-  if (users.find((u) => u.email === normalized)) {
+  if (users.find((u) => normalizeEmail(u.email) === normalized)) {
     throw new Error("User already exists");
   }
   const passwordHash = await hashString(password);
@@ -79,9 +104,9 @@ export async function signup({
 }
 
 export async function login({ email, password }) {
+  const normalized = normalizeEmail(email);
   const users = getAllUsers();
-  const normalized = email.trim().toLowerCase();
-  const user = users.find((u) => u.email === normalized);
+  const user = users.find((u) => normalizeEmail(u.email) === normalized);
   if (!user) throw new Error("User not found");
   const passwordHash = await hashString(password);
   if (passwordHash !== user.passwordHash) throw new Error("Incorrect password");
@@ -97,7 +122,7 @@ export function getCurrentUser() {
   const email = localStorage.getItem(SESSION_KEY);
   if (!email) return null;
   const users = getAllUsers();
-  const user = users.find((u) => u.email === email);
+  const user = users.find((u) => normalizeEmail(u.email) === normalizeEmail(email));
   if (!user) return null;
   return { email: user.email, role: user.role };
 }
@@ -108,9 +133,11 @@ export async function resetPassword({
   securityAnswer,
   newPassword,
 }) {
+  const normalized = normalizeEmail(email);
   const users = getAllUsers();
-  const normalized = email.trim().toLowerCase();
-  const idx = users.findIndex((u) => u.email === normalized);
+  const idx = users.findIndex(
+    (u) => normalizeEmail(u.email) === normalized
+  );
   if (idx === -1) throw new Error("User not found");
   const user = users[idx];
   const answerHash = await hashString(securityAnswer.trim().toLowerCase());
@@ -128,9 +155,11 @@ export async function changePassword({
   currentPassword,
   newPassword,
 }) {
+  const normalized = normalizeEmail(email);
   const users = getAllUsers();
-  const normalized = email.trim().toLowerCase();
-  const idx = users.findIndex((u) => u.email === normalized);
+  const idx = users.findIndex(
+    (u) => normalizeEmail(u.email) === normalized
+  );
   if (idx === -1) throw new Error("User not found");
   const user = users[idx];
   const currentHash = await hashString(currentPassword);
