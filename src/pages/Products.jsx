@@ -54,15 +54,6 @@ const Products = () => {
   return (
     <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Products</h2>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        >
-          Add Product
-        </button>
-      </div>
 
       {/* Search */}
       <input
