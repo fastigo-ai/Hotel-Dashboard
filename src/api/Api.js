@@ -4,7 +4,7 @@ import axios from "axios";
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
 // export const BASE_URL = "https://localhost:3000";
 
-export const BASE_URL = "https://whale-app-oiglt.ondigitalocean.app";
+export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
 
 /**
  * Upload product data including image
