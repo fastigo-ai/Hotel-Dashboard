@@ -1,10 +1,8 @@
 import axios from "axios";
 
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
-// export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
-export const BASE_URL = "http://localhost:3000";
-
-// const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
+export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
+// export const BASE_URL = "http://localhost:3000";
 
 /**
  * Upload product data including image
@@ -125,7 +123,7 @@ export const getPropertyCards = async () => {
 export const getPropertyDetail = async (id) => {
   try {
     const response = await axios.get(
-      `https://starfish-app-6yhui.ondigitalocean.app/api/property/getPropertyDetail/${id}`
+      `https://whale-app-oiglt.ondigitalocean.app/api/property/getPropertyDetail/${id}`
     );
     return response.data;
   } catch (error) {
