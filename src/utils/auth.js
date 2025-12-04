@@ -111,11 +111,13 @@ export async function login({ email, password }) {
   const passwordHash = await hashString(password);
   if (passwordHash !== user.passwordHash) throw new Error("Incorrect password");
   localStorage.setItem(SESSION_KEY, normalized);
+  window.dispatchEvent(new Event("auth-change"));
   return { email: normalized, role: user.role };
 }
 
 export function logout() {
   localStorage.removeItem(SESSION_KEY);
+  window.dispatchEvent(new Event("auth-change"));
 }
 
 export function getCurrentUser() {
