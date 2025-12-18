@@ -168,10 +168,20 @@ export const getBookings = async () => {
 
 export const getConfirmedBookings = async () => {
   try {
-    const res = await api.get("/api/property/all-confirmed-bookings");
+    const res = await api.get("/api/property/allbookings");
     return res.data;
   } catch (error) {
     throw error;
   }
 };
+
+// GET /bookings?
+// status=cancelled
+// &fromDate=2025-01-01
+// &toDate=2025-02-01
+// &search=verma
+// &page=1
+// &limit=20
+
+
 
