@@ -1,8 +1,15 @@
 import axios from "axios";
 
 // export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
+<<<<<<< HEAD
 export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
 // export const BASE_URL = "http://localhost:3000";
+=======
+// export const BASE_URL = "https://lionfish-app-mwu2u.ondigitalocean.app";
+// export const BASE_URL = "http://localhost:3000";
+
+export const BASE_URL = "https://king-prawn-app-5az7w.ondigitalocean.app";
+>>>>>>> 2b3a474 (done1)
 
 /**
  * Upload product data including image
