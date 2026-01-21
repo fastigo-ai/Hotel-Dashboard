@@ -75,6 +75,7 @@ const Customers = () => {
   /* ================= Helpers ================= */
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-US", {
+      timeZone: "America/Toronto",
       year: "numeric",
       month: "short",
       day: "numeric",
